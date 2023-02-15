@@ -1,0 +1,58 @@
+\documentclass{article}
+
+% Include necessary packages
+\usepackage{amsmath} % for mathematical notation
+\usepackage{amssymb} % for mathematical symbols
+\usepackage{algorithm} % for typesetting algorithms
+\usepackage{algorithmic} % for typesetting algorithms
+\usepackage{listings} % for typesetting code
+\usepackage{color} % for syntax highlighting
+\usepackage{geometry} % for adjusting margins
+
+\geometry{margin=1in}
+
+\title{COMP3121 Notes}
+\begin{document}
+
+\section*{\huge COMP3121 Notes}
+~\\
+\section{Week 1}
+\subsection{Intro to Algorithms}
+
+\textbf{What is an Algorithm?} \\
+A collection of precisely defined steps that can be executed mechanically (without intelligent decision-making).
+\\\\
+\textbf{Sequential Deterministic Algorithms:} \\
+Algorithms are given as sequences of steps, thus assuming that only one step can be executed at a given time.
+\\\\
+\textbf{Example: Two Thieves} \\
+Alice and Bob have robbed a warehouse and have to split a pile of items without price tags on them. 
+Design an algorithm to split the pile so that each thief \textbf{believes} that they have got at least
+half the loop.
+\\\\
+\underline{Solution:} \\
+\begin{algorithmic}
+    \STATE{Alice splits the pile in two parts, so that she believes that both parts are equal}
+    \STATE{Bob then picks the part that he believes is no worse than the other}
+\end{algorithmic}
+~\\
+\textbf{Example: Three Thieves} \\
+Alice, Bob and Carol have robbed a warehouse and have to split a pile of items without price tags on them. How do they do this in a way that ensures that each thief \textbf{believes} they have gotten at least one third of the loot.
+\\\\
+\underline{Solution:} \\
+\begin{algorithmic} 
+    \STATE{Alice makes a pile of \(\frac{1}{3}\) called \(X\)}
+    \IF{Bob agrees \(X\) \(\le \frac{1}{3}\)}
+        \STATE{Bob agrees to split the remainder with Carol}
+        \IF{Carol agrees \(X\) \(\le \frac{1}{3}\)}
+            \STATE{Bob and Carol split the rest}
+        \ELSE{Alice and Bob split the rest}
+        \ENDIF
+    \ELSE{Bob reduces pile until he thinks \(X\) \(\le \frac{1}{3}\) and Alice and Carol split the rest}
+    \ENDIF
+\end{algorithmic}
+~\\
+\textbf{When are proofs necessary?} \\
+We use proofs in circumstances where it is not clear that an algorithm truly does its job. \\\\
+Proofs should \underline{not be used to prove the obvious.}
+\end{document}
