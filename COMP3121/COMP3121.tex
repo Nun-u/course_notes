@@ -8,6 +8,7 @@
 \usepackage{listings} % for typesetting code
 \usepackage{color} % for syntax highlighting
 \usepackage{geometry} % for adjusting margins
+\usepackage{tcolorbox} % for shaded boxes behind text
 
 \geometry{margin=1in}
 
@@ -55,4 +56,113 @@ Alice, Bob and Carol have robbed a warehouse and have to split a pile of items w
 \textbf{When are proofs necessary?} \\
 We use proofs in circumstances where it is not clear that an algorithm truly does its job. \\\\
 Proofs should \underline{not be used to prove the obvious.}
+\pagebreak
+\subsection{Complexity}
+\textbf{Rates of Growth} \\\\
+When trying to determine whether one algorithm is faster than another, we talk in terms of \emph{asymptotics}, being long-run behavior. \\
+- e.g if the size of the input doubles, does the function's value double? 
+\\\\
+We want to categorise the runtime performance of an algorithm by its \emph{asymptotic rate of growth}.
+\\\\
+\textbf{Big-O Notation}
+\\
+\begin{tcolorbox}
+\textbf{Definition:} \\
+We say $f(n) = O(g(n))$ if for \emph{large enough n} is \emph{at most a constant multiple of} $g(n)$.
+\end{tcolorbox}
+~\\
+- $g(n)$ is an \emph{asymptotic upper bound} for $f(n)$ \\
+- The rate of growth of function $f$ is no greater than that of function $g$ \\
+- An algorithm whose running time is $f(n)$ scales \emph{at least as well} as one whose running time is $g(n)$
+\\
+\begin{tcolorbox}
+    \textbf{Example} \\
+    Let $f(n) = 100n$. Then $f(n) = O(n)$, because $f(n)$ is at most 100 times $n$ for large $n$.
+\end{tcolorbox}
+~\\
+\textbf{Big-Omega Notation}
+\\
+\begin{tcolorbox}
+    \textbf{Definition} \\
+    We say $f(n) = \Omega(g(n))$ if for \emph{large enough n}, $f(n)$ is \emph{at least} a constant multiple of $g(n)$.
+\end{tcolorbox}
+~\\
+- $g(n)$ is said to be an \emph{asymptotic lower bound} for $f(n)$. \\
+- Meaning the true rate of growth of function $f$ is no less than that of function $g$. \\
+- An algorithm whose running time is $f(n)$ \emph{scales at least as badly} as $g(n)$.
+~\\\\
+\textbf{Big-Theta Notation}
+\\
+\begin{tcolorbox}
+    \textbf{Definition}
+    We say $f(n) = \Theta(g(n))$ if $f(n) = O(g(n))$ and $f(n) = \Omega(g(n))$.
+\end{tcolorbox}
+~\\
+- $f(n)$ and $g(n)$ are said to have the same asymptotic growth. \\
+- An algorithm whose running time is $f(n)$ scales as well as $g(n)$.
+\\\\
+\textbf{Sum Property}
+\\
+\begin{tcolorbox}
+    \textbf{Fact} \\
+    If $f_{1} = O(g_{1})$ and $f_{2} = O(g_{2})$, then $f_{1} + f_{2} = O(g_{1} + g_{2})$.
+\end{tcolorbox}
+~\\
+- This property justifies ignoring non-dominant terms. \\
+- If $f_{2}$ has a lower asymptotic bound than $f_{1}$ then the bound on $f_{1}$ also applies to $f_{1} + f_{2}$ \\
+- For example, if $f_{2}$ is linear but $f_{1}$ is quadratic, then $f_{1} + f_{2}$ is quadratic. \\
+- Especially relevant when dealing with algorithms that have two or more \emph{sequentially executed stages}.
+\\\\
+\textbf{Product Property}
+\begin{tcolorbox}
+    \textbf{Fact} \\
+    If $f_{1} = O(g_{1})$ and $f_{2} = O(g_{2})$ then $f_{1} \cdot f_{2} = O(g_{1} \cdot g_{2})$.
+\end{tcolorbox}
+~\\
+- Especially relevant when dealing with algorithms that have two or more \emph{nested stages.} \\
+\subsection{Logarithms}
+\\
+\begin{tcolorbox}
+    \textbf{Definition} \\
+    For $a, b > 0$ and $a \neq 1$, let $n = log_{a}b$ if $a^{n} = b$.
+\end{tcolorbox}
+\begin{tcolorbox}
+    \textbf{Properties} \\
+    $$a^{log_{a}n} = n$$
+    $$log_{a}(mn) = log_{a}m + log_{a}n$$
+    $$log_{a}(n^{k}) = k \cdot log_{a}n$$
+\end{tcolorbox}
+~\\
+\textbf{Change of Base Rule}
+\\
+\begin{tcolorbox}
+    \textbf{Theorem} \\
+    For $a, b, x > 0$ and $a, b \neq 1$, we have
+    $$log_{a}x = \frac{log_{b}x}{log_{b}a}$$
+\end{tcolorbox}
+~\\
+- The denominator is constant with respect to $x!$ \\
+\subsection{Data Structures}
+\textbf{Hash Tables} \\
+- Stores values indexed by keys. \\
+- Hash functions map keys to indices in a fixed size table. \\
+- Ideally, no two keys map to the same index, although impossible to guarantee this. \\
+- A situation where two (or more) keys have the same hash is called a \emph{collision}. \\
+- There are methods to resolve collisions (e.g separate chaining, open addressing, etc)
+\\\\
+\begin{tcolorbox}
+    \textbf{Operations (expected)} \\
+    - Search for the value associated to a given key: $O(1)$ \\
+    - Update the value associated to a given key: $O(1)$ \\
+    - Insert/delete: $O(1)$
+\end{tcolorbox}
+\begin{tcolorbox}
+\textbf{Operations (worst case)} \\
+    - Search for the value associated to a given key: $O(n)$ \\
+    - Update the value associated to a given key: $O(n)$ \\
+    - Insert/delete: $O(n)$
+\end{tcolorbox}
+~\\
+\textbf{Binary Search Trees} \\
+...to be continued
 \end{document}
