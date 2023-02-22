@@ -10,6 +10,8 @@
 \usepackage{geometry} % for adjusting margins
 \usepackage{tcolorbox} % for shaded boxes behind text
 
+\hbadness=99999
+
 \geometry{margin=1in}
 
 \title{COMP3121 Notes}
@@ -145,7 +147,7 @@ We say $f(n) = O(g(n))$ if for \emph{large enough n} is \emph{at most a constant
 \subsection{Data Structures}
 \textbf{Hash Tables} \\
 - Stores values indexed by keys. \\
-- Hash functions map keys to indices in a fixed size table. \\
+- Hash functions map keys to indices in a fixed-size table. \\
 - Ideally, no two keys map to the same index, although impossible to guarantee this. \\
 - A situation where two (or more) keys have the same hash is called a \emph{collision}. \\
 - There are methods to resolve collisions (e.g separate chaining, open addressing, etc)
@@ -164,5 +166,235 @@ We say $f(n) = O(g(n))$ if for \emph{large enough n} is \emph{at most a constant
 \end{tcolorbox}
 ~\\
 \textbf{Binary Search Trees} \\
-...to be continued
+BSTs store keys or key-value pairs in a tree, where each node has at most two children, designated at left and right.
+\\\\
+Each node's key compares greater than all keys in its left subtree, and less than all keys in its right subtree.
+\begin{tcolorbox}
+    \textbf{Operations} \\
+    Let \emph{h} be the height of the tree, that is, the length of the longest path from the root to the leaf. \\
+    - Search: $O(h)$ \\
+    - Insert/delete: $O(h)$
+\end{tcolorbox}
+~\\
+\textbf{Self-Balancing Binary Search Trees} \\
+- Best Case: $h \approx log_{2}n$, which is said to be balanced. \\
+- Worst Case: $h \approx n$, which is if keys are inserted in increasing order.
+\\\\
+All examples of Self-Balancing BSTs perform rotations to maintain certain invariants, in order to guarantee that $h = O(\log n)$ and therefore that all tree operations run in $O(\log n)$.
+\\\\
+\textbf{Binary Heaps} \\
+- Store items in a complete binary tree, with every parent comparing $\geq$ all its children for max heap. \\
+- For min heap, it's $\leq$ instead. \\
+- Commonly used to implement a priority queue.
+\begin{tcolorbox}
+    \textbf{Operations} \\
+    - Build Heap: $O(n)$ \\
+    - Find Maximum: $O(1)$ \\
+    - Delete Maximum: $O(\log n)$ \\
+    - Insert: $O(\log n)$
+\end{tcolorbox}
+~\\
+\subsection{Binary Search}
+\begin{tcolorbox}
+    \begin{algorithmic}
+        \IF{the array has no elements (if r is not $\geq$ length)}
+            \STATE{$x$ cannot be found.}
+        \ELSE{$m = \frac{l + r}{2}$ (midpoint of the subarray)}
+            \IF {$A[m] = x$}
+                \STATE{Occurrence found, exit the recursion}
+            \ELSEIF{$A[m] > x$}
+                \STATE{Recurse on the left subarray A[l..m - 1]}
+            \ELSE
+                \STATE{Recurse on the right subarray A[m + 1..r]}
+            \ENDIF
+        \ENDIF
+    \end{algorithmic}
+
+\end{tcolorbox}
+\begin{tcolorbox}
+    \textbf{Complexity} \\
+    - Worst Case: $O(\log n)$ \\
+    At each step, the search space halves, which can only happen $log_{2}n$ times.
+\end{tcolorbox}
+~\\
+\textbf{Decision and Optimisation Problems} 
+\\\\
+Decision problems are of the form: \\
+\emph{Given some parameters including X, can you...}
+\\\\
+Optimisation problems are of the form: \\
+\emph{What is the smallest X for which you can...}
+\\\\
+An optimisation problem is typically much harder than the corresponding decision problem, because there are more choices.
+\\\\
+\textbf{Discrete Binary Search} \\
+A technique of binary searching, where you find the smallest $X$ such that $f(X) = 1$ using binary search.
+\\\\
+Overhead is just a factor of $O(\log A)$ where $A$ is the range of possible answers.
+\subsection{Sorting}
+\textbf{Merge Sort}
+\\
+\begin{tcolorbox}
+   \textbf{Algorithm} \\
+   1. If $n = 1$, do nothing. Otherwise let $m = (n + 1)/2$. \\
+   2. Apply merge sort recursively to $A[1..m]$ and $A[m + 1..n]$. \\
+   3. Merge $A[1..m]$ and $A[m + 1..n]$ into $A[1..n]$.
+\end{tcolorbox}
+\begin{tcolorbox}
+    \textbf{Complexity} \\
+    - Best Case: $O(n\log n)$ \\
+    - Worst Case: $O(n \log n)$ \\
+    - Space: $O(n)$
+\end{tcolorbox}
+~\\
+- Reliably fast for large arrays. \\
+- Space requirement is a drawback. \\
+\\\\
+\textbf{Heapsort}
+\\
+\begin{tcolorbox}
+    \textbf{Algorithm} \\
+    1. Construct a min heap from the elements of $A$. \\
+    2, Write the top element of the heap to $A[1]$ and pop it from the heap. \\
+    3. Repeat the previous step until the array is empty.
+\end{tcolorbox}
+\begin{tcolorbox}
+    \textbf{Complexity} \\
+    - Best Case: $O(n \log n)$ \\
+    - Worst Case: $O(n \log n)$ \\
+    - Selection sort but with selection in $O(\log n)$ rather than $O(n)$
+\end{tcolorbox}
+~\\
+- Reliably fast for large arrays. \\
+- No additional space is required. \\
+- Constant factor is larger than other fast sorts, so used less in practice.
+\\\\
+\textbf{Quicksort}
+\\
+\begin{tcolorbox}
+    \textbf{Algorithm} \\
+    1. Designate the first element as the \emph{pivot}. \\
+    2. Rearrange the array so that all smaller elements are to the left of the pivot, and all larger elements are to its right. \\
+    3. Recurse on the subarrays left and right of the pivot.
+\end{tcolorbox}
+\begin{tcolorbox}
+    \textbf{Complexity} \\
+    - Rearranging and partitioning the array can be done in $O(n)$. \\
+    - If the pivot is the median, best case is $O(n \log n)$. \\
+    - Worst case is $O(n^{2})$
+\end{tcolorbox}
+~\\
+- Because the worst case is so rare, quicksort is widely used. \\
+- Quicksort forms the basis of the default sort in many languages.
+\\\\
+\textbf{Comparison Sorting}
+\\
+Any comparison sort must perform $\Omega(n \log n)$ comparisons in the worst case.
+\\
+\begin{tcolorbox}
+    \textbf{Proof} \\
+    - There are $n!$ permutations of the array. \\
+    - In the worst case, only one of these is the correct sorted order, and our sorting algorithm must find which permutation this is. \\
+    - An algorithm that performs $k$ comparisons can get $2^{k}$ different combinations of results from these comparisons, and therefore can distinguish between at most $2^{k}$ permutations. \\
+    - We need to perform number of comparisons $k$ such that $2^{k} \geq n!$. \\
+    - We can conclude that $k = \omega(n \log n)$ in the worst case.
+\end{tcolorbox}
+~\\
+\textbf{Counting Sort}
+\\
+\begin{tcolorbox}
+    \textbf{Algorithm} \\
+    1. Create another array $B$ of size $k$ to store the count of each value, initially all zeros. \\
+    2. Iterate through $A$. At each index $i$, record one more instance of the value $A[i]$ by incrementing $B[A[i]]$. \\
+    3. Write $B[1]$ many ones, then $B[2]$ many twos... into $A$, from left to right.
+\end{tcolorbox}
+\begin{tcolorbox}
+    \textbf{Complexity} \\
+    - Initialising $B$ takes $O(k)$ time. \\
+    - Iterating through $A$ takes $O(n)$ time. \\
+    - Final step takes $O(max(n, k))$ time... $O(n + k)$. \\
+    - Total complexity is $O(n + k)$. \\
+    - $O(k)$ space required.
+\end{tcolorbox}
+~\\
+\textbf{Bucket Sort}
+\\
+\begin{tcolorbox}
+    \textbf{Algorithm} \\
+    1. Distribute the items into buckets $1,...k$. \\
+    2. Sort within each bucket. \\
+    3. Concatenate the sorted buckets. \\
+\end{tcolorbox}
+~\\
+Now to sort each bucket using a bucket sort...
+\\\\
+\textbf{MSD Radix Sort}
+\\
+\begin{tcolorbox}
+    \textbf{Algorithm} \\
+    \emph{Bucket} the keys by their first symbol, and recursively apply the same algorithm to each bucket.
+\end{tcolorbox}
+\begin{tcolorbox}
+    \textbf{Complexity} \\
+    - There are $k$ levels of recursion. \\
+    - In each level, there are $n$ keys to be bucketed, in constant time. \\
+    - Worst case complexity is thus $O(nk)$.
+\end{tcolorbox}
+~\\
+\textbf{LSD Radix Sort}
+\\
+\begin{tcolorbox}
+    \textbf{Algorithm} \\
+    \emph{Bucket} the keys by their last symbol, then sort all keys by their second last symbol, etc.
+\end{tcolorbox}
+\begin{tcolorbox}
+    \textbf{Complexity} \\
+    - Worst case complexity is again $O(nk)$.
+\end{tcolorbox}
+\subsection{Graphs}
+A graph is a pair $(V, E)$ where $V$ is the \emph{vertex set} and $E$ is the \emph{edge set}, where each edge connects a pair of vertices.
+\\\\
+- We refer to $V$ as vertices. \\
+- And $E$ as number of edges.
+\\\\
+\textbf{Adjacency List} \\
+- For each vertex $v$, stores a list of edges from $v$.
+\begin{tcolorbox}
+    \textbf{Operations} \\
+    - Test for edge from $v$ to $u$: $O(deg(v))$ \\
+    - Iterate over neighbours of $v$: $O(deg(v))$
+\end{tcolorbox}
+~\\
+\textbf{Adjacency Matrix} \\
+- Store a matrix, where each cell stores information about the edge from $u$ to $v$ or lack thereof.
+\begin{tcolorbox}
+    \textbf{Operations} \\
+    - Test for edge from $v$ to $u$: $O(1)$ \\
+    - Iterate over neighbours of $v$: $O(V)$
+\end{tcolorbox}
+~\\
+\textbf{Depth-First Search} \\
+From a vertex $v$: \\
+- mark $v$ as visited and, \\
+- recurse on each unvisited neighbor of $v$. \\
+- time complexity is $O(V + E)$ using a stack.
+\\\\
+\textbf{Breadth-First Search} \\
+From a vertex $v$: \\
+- mark $v$ as visited and, \\
+- mark each unvisited neighbour of $v$ as visited, \\
+- mark each of their unvisited neighbors as visited, etc. \\
+- time complexity is $O(V + E)$ using a queue.
+\\\\
+\textbf{Trees}
+\begin{tcolorbox}
+    \textbf{Definitions} \\
+    - An undirected graph is \emph{connected} if every pair of vertices can reach each other by a sequence of one or more edges.
+    \\\\
+    A tree is a \emph{connected graph} because: \\
+    - there is a unique simple path between each pair of vertices. \\
+    - there is one fewer edge than vertices, or \\
+    - there are no cycles, or \\
+    - the removal of any edge disconnects from the graph.
+\end{tcolorbox}
 \end{document}
